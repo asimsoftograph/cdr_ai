@@ -14,3 +14,8 @@ dummy.md
 models/recognizer/english_trocr_model/
 models/recognizer/qween_vision_model_for_bangla/
 *.safetensors
+
+# Logs and temporary files
+logs/
+temp/
+flagged_human/

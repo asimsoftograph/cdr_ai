@@ -107,3 +107,4 @@ AttributeError: 'Parameter' object has no attribute 'compress_statistics'
 2026-04-13 11:23:20 | INFO | app.services.ocr_service | Saved review artifacts | image=data/flagged_human/review_5.png | metadata=data/flagged_human/review_5.json
 2026-04-13 11:23:20 | INFO | app.services.ocr_service | OCRService.process_form finished | needs_review=True
 2026-04-13 11:23:20 | INFO | app.api.v1.endpoints | OCR pipeline completed | needs_review=True
+2026-04-13 15:25:42 | INFO | app.api.v1.endpoints | Health check endpoint called

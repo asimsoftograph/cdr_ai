@@ -14,7 +14,7 @@ A lightweight OCR/ML API scaffold based on the provided project structure.
    ```
 3. Start the API:
    ```bash
-   python main.py
+  uvicorn app.main:app --reload
    ```
 
 The API will be available at `http://127.0.0.1:8000`.
