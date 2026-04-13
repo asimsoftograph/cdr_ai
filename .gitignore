@@ -1,0 +1,16 @@
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+
+# Virtual environments
+.venv
+
+dummy.md
+# ML models (ignore large folders)
+models/recognizer/english_trocr_model/
+models/recognizer/qween_vision_model_for_bangla/
+*.safetensors

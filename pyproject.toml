@@ -1,0 +1,25 @@
+[project]
+name = "cdr-test"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "fastapi",
+    "opencv-python>=4.13.0.92",
+    "pydantic",
+    "pillow",
+    "transformers>=4.51.0",
+    "peft",
+    "bitsandbytes>=0.45.3",
+    "sentencepiece",
+    "safetensors",
+    "accelerate",
+    "torch==2.6.0",
+    "ultralytics>=8.4.37",
+    "uvicorn[standard]",
+    "python-multipart>=0.0.26",
+    "qwen-vl-utils>=0.0.14",
+    "torchvision==0.21.0",
+    "torchaudio==2.6.0",
+]

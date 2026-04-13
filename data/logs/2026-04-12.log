@@ -1,0 +1,161 @@
+2026-04-12 17:49:51 | INFO | app.api.v1.endpoints | Health check endpoint called
+2026-04-12 17:51:11 | INFO | app.api.v1.endpoints | Received /process-form request | filename=img_1654.jpg | content_type=image/jpeg
+2026-04-12 17:51:11 | INFO | app.api.v1.endpoints | Uploaded file read successfully | bytes=524740
+2026-04-12 17:51:11 | INFO | app.api.v1.endpoints | Image decoded successfully | size=(2336, 4160)
+2026-04-12 17:51:11 | INFO | app.api.v1.endpoints | Starting OCR pipeline execution
+2026-04-12 17:51:11 | INFO | app.api.v1.endpoints | Initializing OCRService singleton
+2026-04-12 17:51:11 | INFO | app.services.ocr_service | Initializing OCRService components
+2026-04-12 17:51:11 | INFO | app.ml.detector | Loading YOLO detector model from models/detector/cdr_book_modify_training_dataset_v1.pt
+2026-04-12 17:51:11 | INFO | app.ml.detector | YOLO detector model loaded
+2026-04-12 17:51:11 | INFO | app.ml.recognizer | Initializing BengaliRecognizer
+2026-04-12 17:51:11 | INFO | app.ml.recognizer | BengaliRecognizer device setup | device=cuda | dtype=torch.float16
+2026-04-12 17:51:18 | ERROR | app.services.ocr_service | BengaliRecognizer initialization failed: 'Parameter' object has no attribute 'compress_statistics'
+Traceback (most recent call last):
+  File "/media/softograph/sg-ai/cdr_test/app/services/ocr_service.py", line 51, in __init__
+    self.bengali_recognizer = BengaliRecognizer()
+                              ~~~~~~~~~~~~~~~~~^^
+  File "/media/softograph/sg-ai/cdr_test/app/ml/recognizer.py", line 79, in __init__
+    self.model = PeftModel.from_pretrained(
+                 ~~~~~~~~~~~~~~~~~~~~~~~~~^
+        base_model,
+        ^^^^^^^^^^^
+    ...<3 lines>...
+        trust_remote_code=True,
+        ^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/media/softograph/sg-ai/cdr_test/.venv/lib/python3.13/site-packages/peft/peft_model.py", line 560, in from_pretrained
+    model = MODEL_TYPE_TO_PEFT_MODEL_MAPPING[config.task_type](
+        model,
+    ...<3 lines>...
+        low_cpu_mem_usage=low_cpu_mem_usage,
+    )
+  File "/media/softograph/sg-ai/cdr_test/.venv/lib/python3.13/site-packages/peft/peft_model.py", line 1885, in __init__
+    super().__init__(model, peft_config, adapter_name, **kwargs)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/media/softograph/sg-ai/cdr_test/.venv/lib/python3.13/site-packages/peft/peft_model.py", line 129, in __init__
+    self.base_model = cls(model, {adapter_name: peft_config}, adapter_name)
+                      ~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/media/softograph/sg-ai/cdr_test/.venv/lib/python3.13/site-packages/peft/tuners/tuners_utils.py", line 298, in __init__
+    self.inject_adapter(self.model, adapter_name, low_cpu_mem_usage=low_cpu_mem_usage, state_dict=state_dict)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/media/softograph/sg-ai/cdr_test/.venv/lib/python3.13/site-packages/peft/tuners/tuners_utils.py", line 804, in inject_adapter
+    self._create_and_replace(
+    ~~~~~~~~~~~~~~~~~~~~~~~~^
+        peft_config, adapter_name, target, target_name, parent, current_key=key
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/media/softograph/sg-ai/cdr_test/.venv/lib/python3.13/site-packages/peft/tuners/lora/model.py", line 250, in _create_and_replace
+    new_module = self._create_new_module(lora_config, adapter_name, target, device_map=device_map, **kwargs)
+  File "/media/softograph/sg-ai/cdr_test/.venv/lib/python3.13/site-packages/peft/tuners/lora/model.py", line 337, in _create_new_module
+    new_module = dispatcher(target, adapter_name, lora_config=lora_config, **kwargs)
+  File "/media/softograph/sg-ai/cdr_test/.venv/lib/python3.13/site-packages/peft/tuners/lora/bnb.py", line 605, in dispatch_bnb_4bit
+    "compress_statistics": target_base_layer.weight.compress_statistics,
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'Parameter' object has no attribute 'compress_statistics'
+2026-04-12 17:51:18 | INFO | app.ml.recognizer | Initializing EnglishRecognizer
+2026-04-12 17:51:18 | INFO | app.ml.recognizer | EnglishRecognizer initialized successfully | device=cuda
+2026-04-12 17:51:18 | INFO | app.services.ocr_service | EnglishRecognizer initialized successfully
+2026-04-12 17:51:18 | INFO | app.services.ocr_service | Review directory ready at data/flagged_human
+2026-04-12 17:51:18 | INFO | app.services.ocr_service | OCRService.process_form started
+2026-04-12 17:51:18 | INFO | app.ml.detector | Running detector batch inference | batch_size=1
+2026-04-12 17:51:19 | INFO | app.ml.detector | Detector batch inference completed
+2026-04-12 17:51:19 | INFO | app.services.ocr_service | Detection completed | boxes=9 | labels=['age', 'brand', 'cheek_mark', 'customer_copy', 'date', 'name', 'partner_code', 'phn_number', 'sign']
+2026-04-12 17:51:19 | INFO | app.services.ocr_service | Processing field | name=customer_copy | detector_confidence=0.97
+2026-04-12 17:51:19 | INFO | app.services.ocr_service | Applying fixed output (no OCR) | field=customer_copy | output_key=customer_copy | output_text=customer copy
+2026-04-12 17:51:19 | INFO | app.services.ocr_service | Processing field | name=brand | detector_confidence=0.92
+2026-04-12 17:51:19 | INFO | app.services.ocr_service | Using English recognizer for field=brand
+2026-04-12 17:51:19 | INFO | app.ml.recognizer | EnglishRecognizer inference started
+2026-04-12 17:51:19 | INFO | app.ml.recognizer | EnglishRecognizer inference completed | confidence=0.22
+2026-04-12 17:51:19 | INFO | app.services.ocr_service | Field result | field=brand | text=ID Fiesh | confidence=0.22
+2026-04-12 17:51:19 | INFO | app.services.ocr_service | Flagged for human review due to low OCR confidence | field=brand | confidence=0.22
+2026-04-12 17:51:19 | INFO | app.services.ocr_service | Processing field | name=age | detector_confidence=0.90
+2026-04-12 17:51:19 | INFO | app.services.ocr_service | Using English recognizer for field=age
+2026-04-12 17:51:19 | INFO | app.ml.recognizer | EnglishRecognizer inference started
+2026-04-12 17:51:19 | INFO | app.ml.recognizer | EnglishRecognizer inference completed | confidence=0.73
+2026-04-12 17:51:19 | INFO | app.services.ocr_service | Field result | field=age | text=2525 | confidence=0.73
+2026-04-12 17:51:19 | INFO | app.services.ocr_service | Processing field | name=partner_code | detector_confidence=0.89
+2026-04-12 17:51:19 | INFO | app.services.ocr_service | Using English recognizer for field=partner_code
+2026-04-12 17:51:19 | INFO | app.ml.recognizer | EnglishRecognizer inference started
+2026-04-12 17:51:19 | INFO | app.ml.recognizer | EnglishRecognizer inference completed | confidence=0.20
+2026-04-12 17:51:19 | INFO | app.services.ocr_service | Field result | field=partner_code | text=EO29EF | confidence=0.20
+2026-04-12 17:51:19 | INFO | app.services.ocr_service | Flagged for human review due to low OCR confidence | field=partner_code | confidence=0.20
+2026-04-12 17:51:19 | INFO | app.services.ocr_service | Processing field | name=name | detector_confidence=0.87
+2026-04-12 17:51:19 | WARNING | app.services.ocr_service | Bengali recognizer unavailable, falling back to English recognizer | field=name
+2026-04-12 17:51:19 | INFO | app.services.ocr_service | Using English recognizer for field=name
+2026-04-12 17:51:19 | INFO | app.ml.recognizer | EnglishRecognizer inference started
+2026-04-12 17:51:19 | INFO | app.ml.recognizer | EnglishRecognizer inference completed | confidence=0.26
+2026-04-12 17:51:19 | INFO | app.services.ocr_service | Field result | field=name | text=RAHABAN | confidence=0.26
+2026-04-12 17:51:19 | INFO | app.services.ocr_service | Flagged for human review due to low OCR confidence | field=name | confidence=0.26
+2026-04-12 17:51:19 | INFO | app.services.ocr_service | Processing field | name=phn_number | detector_confidence=0.86
+2026-04-12 17:51:19 | INFO | app.services.ocr_service | Using English recognizer for field=phn_number
+2026-04-12 17:51:19 | INFO | app.ml.recognizer | EnglishRecognizer inference started
+2026-04-12 17:51:19 | INFO | app.ml.recognizer | EnglishRecognizer inference completed | confidence=0.79
+2026-04-12 17:51:19 | INFO | app.services.ocr_service | Field result | field=phn_number | text=015728917 | confidence=0.79
+2026-04-12 17:51:19 | INFO | app.services.ocr_service | Processing field | name=sign | detector_confidence=0.83
+2026-04-12 17:51:19 | INFO | app.services.ocr_service | Applying fixed output (no OCR) | field=sign | output_key=sign | output_text=signed
+2026-04-12 17:51:19 | INFO | app.services.ocr_service | Processing field | name=date | detector_confidence=0.80
+2026-04-12 17:51:19 | INFO | app.services.ocr_service | Using English recognizer for field=date
+2026-04-12 17:51:19 | INFO | app.ml.recognizer | EnglishRecognizer inference started
+2026-04-12 17:51:19 | INFO | app.ml.recognizer | EnglishRecognizer inference completed | confidence=0.78
+2026-04-12 17:51:19 | INFO | app.services.ocr_service | Field result | field=date | text= | confidence=0.78
+2026-04-12 17:51:19 | INFO | app.services.ocr_service | Processing field | name=cheek_mark | detector_confidence=0.65
+2026-04-12 17:51:19 | INFO | app.services.ocr_service | Applying fixed output (no OCR) | field=cheek_mark | output_key=cheek_mark | output_text=checked
+2026-04-12 17:51:19 | INFO | app.services.ocr_service | Sample flagged for human review; saving artifacts
+2026-04-12 17:51:20 | INFO | app.services.ocr_service | Saved review artifacts | image=data/flagged_human/review_3.png | metadata=data/flagged_human/review_3.json
+2026-04-12 17:51:20 | INFO | app.services.ocr_service | OCRService.process_form finished | needs_review=True
+2026-04-12 17:51:20 | INFO | app.api.v1.endpoints | OCR pipeline completed | needs_review=True
+2026-04-12 17:52:23 | INFO | app.api.v1.endpoints | Received /process-form request | filename=img_1594.jpg | content_type=image/jpeg
+2026-04-12 17:52:23 | INFO | app.api.v1.endpoints | Uploaded file read successfully | bytes=523385
+2026-04-12 17:52:23 | INFO | app.api.v1.endpoints | Image decoded successfully | size=(2336, 4160)
+2026-04-12 17:52:23 | INFO | app.api.v1.endpoints | Starting OCR pipeline execution
+2026-04-12 17:52:23 | INFO | app.services.ocr_service | OCRService.process_form started
+2026-04-12 17:52:23 | INFO | app.ml.detector | Running detector batch inference | batch_size=1
+2026-04-12 17:52:23 | INFO | app.ml.detector | Detector batch inference completed
+2026-04-12 17:52:23 | INFO | app.services.ocr_service | Detection completed | boxes=9 | labels=['age', 'brand', 'cheek_mark', 'customer_copy', 'date', 'name', 'partner_code', 'phn_number', 'sign']
+2026-04-12 17:52:23 | INFO | app.services.ocr_service | Processing field | name=customer_copy | detector_confidence=0.96
+2026-04-12 17:52:23 | INFO | app.services.ocr_service | Applying fixed output (no OCR) | field=customer_copy | output_key=customer_copy | output_text=customer copy
+2026-04-12 17:52:23 | INFO | app.services.ocr_service | Processing field | name=age | detector_confidence=0.90
+2026-04-12 17:52:23 | INFO | app.services.ocr_service | Using English recognizer for field=age
+2026-04-12 17:52:23 | INFO | app.ml.recognizer | EnglishRecognizer inference started
+2026-04-12 17:52:24 | INFO | app.ml.recognizer | EnglishRecognizer inference completed | confidence=0.35
+2026-04-12 17:52:24 | INFO | app.services.ocr_service | Field result | field=age | text=22 | confidence=0.35
+2026-04-12 17:52:24 | INFO | app.services.ocr_service | Flagged for human review due to low OCR confidence | field=age | confidence=0.35
+2026-04-12 17:52:24 | INFO | app.services.ocr_service | Processing field | name=date | detector_confidence=0.90
+2026-04-12 17:52:24 | INFO | app.services.ocr_service | Using English recognizer for field=date
+2026-04-12 17:52:24 | INFO | app.ml.recognizer | EnglishRecognizer inference started
+2026-04-12 17:52:24 | INFO | app.ml.recognizer | EnglishRecognizer inference completed | confidence=0.84
+2026-04-12 17:52:24 | INFO | app.services.ocr_service | Field result | field=date | text=21 06 2023 | confidence=0.84
+2026-04-12 17:52:24 | INFO | app.services.ocr_service | Processing field | name=phn_number | detector_confidence=0.89
+2026-04-12 17:52:24 | INFO | app.services.ocr_service | Using English recognizer for field=phn_number
+2026-04-12 17:52:24 | INFO | app.ml.recognizer | EnglishRecognizer inference started
+2026-04-12 17:52:24 | INFO | app.ml.recognizer | EnglishRecognizer inference completed | confidence=0.73
+2026-04-12 17:52:24 | INFO | app.services.ocr_service | Field result | field=phn_number | text=013221701 | confidence=0.73
+2026-04-12 17:52:24 | INFO | app.services.ocr_service | Processing field | name=name | detector_confidence=0.88
+2026-04-12 17:52:24 | WARNING | app.services.ocr_service | Bengali recognizer unavailable, falling back to English recognizer | field=name
+2026-04-12 17:52:24 | INFO | app.services.ocr_service | Using English recognizer for field=name
+2026-04-12 17:52:24 | INFO | app.ml.recognizer | EnglishRecognizer inference started
+2026-04-12 17:52:24 | INFO | app.ml.recognizer | EnglishRecognizer inference completed | confidence=0.25
+2026-04-12 17:52:24 | INFO | app.services.ocr_service | Field result | field=name | text=ARIJ KABUL | confidence=0.25
+2026-04-12 17:52:24 | INFO | app.services.ocr_service | Flagged for human review due to low OCR confidence | field=name | confidence=0.25
+2026-04-12 17:52:24 | INFO | app.services.ocr_service | Processing field | name=brand | detector_confidence=0.87
+2026-04-12 17:52:24 | INFO | app.services.ocr_service | Using English recognizer for field=brand
+2026-04-12 17:52:24 | INFO | app.ml.recognizer | EnglishRecognizer inference started
+2026-04-12 17:52:24 | INFO | app.ml.recognizer | EnglishRecognizer inference completed | confidence=0.00
+2026-04-12 17:52:24 | INFO | app.services.ocr_service | Field result | field=brand | text=Marise | confidence=0.00
+2026-04-12 17:52:24 | INFO | app.services.ocr_service | Flagged for human review due to low OCR confidence | field=brand | confidence=0.00
+2026-04-12 17:52:24 | INFO | app.services.ocr_service | Processing field | name=partner_code | detector_confidence=0.85
+2026-04-12 17:52:24 | INFO | app.services.ocr_service | Using English recognizer for field=partner_code
+2026-04-12 17:52:24 | INFO | app.ml.recognizer | EnglishRecognizer inference started
+2026-04-12 17:52:24 | INFO | app.ml.recognizer | EnglishRecognizer inference completed | confidence=0.20
+2026-04-12 17:52:24 | INFO | app.services.ocr_service | Field result | field=partner_code | text=CCHET | confidence=0.20
+2026-04-12 17:52:24 | INFO | app.services.ocr_service | Flagged for human review due to low OCR confidence | field=partner_code | confidence=0.20
+2026-04-12 17:52:24 | INFO | app.services.ocr_service | Processing field | name=sign | detector_confidence=0.83
+2026-04-12 17:52:24 | INFO | app.services.ocr_service | Applying fixed output (no OCR) | field=sign | output_key=sign | output_text=signed
+2026-04-12 17:52:24 | INFO | app.services.ocr_service | Processing field | name=cheek_mark | detector_confidence=0.74
+2026-04-12 17:52:24 | INFO | app.services.ocr_service | Applying fixed output (no OCR) | field=cheek_mark | output_key=cheek_mark | output_text=checked
+2026-04-12 17:52:24 | INFO | app.services.ocr_service | Sample flagged for human review; saving artifacts
+2026-04-12 17:52:25 | INFO | app.services.ocr_service | Saved review artifacts | image=data/flagged_human/review_4.png | metadata=data/flagged_human/review_4.json
+2026-04-12 17:52:25 | INFO | app.services.ocr_service | OCRService.process_form finished | needs_review=True
+2026-04-12 17:52:25 | INFO | app.api.v1.endpoints | OCR pipeline completed | needs_review=True
