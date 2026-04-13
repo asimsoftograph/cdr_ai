@@ -23,8 +23,8 @@ SPECIAL_FIXED_FIELDS = {
     "sign": ("sign", "signed"),
     "cheek_mark": ("cheek_mark", "checked"),
     "check_mark": ("cheek_mark", "checked"),
-    "check_mark_o": ("cheek_mark", "unchecked"),
-    "cheek_mark_o": ("cheek_mark", "unchecked"),
+    "cheek_mark_0": ("cheek_mark", "unchecked"),
+    "check_mark_0": ("cheek_mark", "unchecked"),
 }
 
 
