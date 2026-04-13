@@ -1,6 +1,6 @@
 
 import os
-
+import uvicorn
 # Keep configurable from environment.
 # If not provided, default to CUDA 12.4 build for bitsandbytes.
 # To disable manually: export BNB_CUDA_VERSION=
@@ -11,3 +11,6 @@ from app.api.v1.endpoints import router
 
 app = FastAPI(title="CDR OCR Service")
 app.include_router(router, prefix="/v1")
+
+if __name__ == "__main__":
+    uvicorn.run("app.main:app", host="0.0.0.0", port=8000)
