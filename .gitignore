@@ -16,6 +16,9 @@ models/recognizer/qween_vision_model_for_bangla/
 *.safetensors
 
 # Logs and temporary files
-logs/
-temp/
-flagged_human/
+logs/*
+!logs/.gitkeep
+temp/*
+!temp/.gitkeep
+flagged_human/*
+!flagged_human/.gitkeep
