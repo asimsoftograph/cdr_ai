@@ -136,14 +136,19 @@ class OCRService:
                     text, confidence = await loop.run_in_executor(
                         None, self.bengali_recognizer.inference, processed_crop
                     )
-                else:
-                    if field_name in BENGALI_FIELDS and self.bengali_recognizer is None:
-                        # Bengali model unavailable; continue with fallback but flag review.
-                        flag_for_human = True
-                        logger.warning(
-                            "Bengali recognizer unavailable, falling back to English recognizer | field=%s",
-                            field_name,
+                elif field_name in BENGALI_FIELDS and self.bengali_recognizer is None:
+                    # Bengali model unavailable; continue with fallback but flag review.
+                    flag_for_human = True
+                    logger.warning(
+                        "Bengali recognizer unavailable, falling back to English recognizer | field=%s",
+                        field_name,
                         )
+                    final_result[field_name] = {
+                            "text": "",
+                            "confidence": 0.0,
+                        }
+                    continue
+                else:   
                     logger.info("Using English recognizer for field=%s", field_name)
                     text, confidence = await loop.run_in_executor(
                         None, self.english_recognizer.inference, processed_crop

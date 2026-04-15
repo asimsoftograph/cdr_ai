@@ -70,7 +70,7 @@ class BengaliRecognizer:
         # bitsandbytes is still used under the hood to deserialize them.
         base_model = Qwen3VLForConditionalGeneration.from_pretrained(
             base_model_name,
-            device_map="auto" if self.use_cuda else None,
+            # device_map="auto" if self.use_cuda else None,
             torch_dtype=self.torch_dtype,
             trust_remote_code=True,
         )
@@ -78,13 +78,17 @@ class BengaliRecognizer:
         self.model = PeftModel.from_pretrained(
             base_model,
             model_path,
-            device_map="auto" if self.use_cuda else None,
-            torch_dtype=self.torch_dtype,
+            # device_map="auto" if self.use_cuda else None,
+            # torch_dtype=self.torch_dtype,
             trust_remote_code=True,
         )
 
-        if not self.use_cuda:
-            self.model.to(self.device)
+        # if not self.use_cuda:
+        #     self.model.to(self.device)
+        if self.use_cuda:
+            self.model.to("cuda")
+        else:
+            self.model.to(self.device)    
 
         self.model.eval()
         logger.info("BengaliRecognizer initialized successfully")
