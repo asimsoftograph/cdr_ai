@@ -2,7 +2,9 @@
 import os
 import uvicorn
 from contextlib import asynccontextmanager
+
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from app.api.v1.endpoints import router
 from app.services.ocr_service import OCRService
 from app.utils.logger import get_logger
@@ -22,7 +24,21 @@ async def lifespan(app: FastAPI):
     logger.info("Server shutdown")
 
 
+
 app = FastAPI(title="CDR OCR Service", lifespan=lifespan)
+
+# CORS settings
+origins = [
+    "*", 
+]
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=False,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 app.include_router(router, prefix="/v1")
 
 
