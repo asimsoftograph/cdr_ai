@@ -1,24 +1,17 @@
 
-from fastapi import APIRouter, File, HTTPException, UploadFile
+from fastapi import APIRouter, File, HTTPException, UploadFile, Request, Depends
 from PIL import Image
 import io
 
-from app.services.ocr_service import OCRService
 from app.utils.logger import get_logger
 
 router = APIRouter()
 logger = get_logger(__name__)
 
-# Singleton — initialized once on first request, not on every call
-_ocr_service: OCRService | None = None
 
-
-def get_ocr_service() -> OCRService:
-    global _ocr_service
-    if _ocr_service is None:
-        logger.info("Initializing OCRService singleton")
-        _ocr_service = OCRService()
-    return _ocr_service
+def get_ocr_service(request: Request):
+    """Dependency to get the pre-initialized OCRService from app.state."""
+    return request.app.state.ocr_service
 
 
 @router.get("/health")
@@ -27,7 +20,7 @@ def health_check():
     return {"status": "service is running"}
 
 @router.post("/process-form")
-async def process_form_api(file: UploadFile = File(...)):
+async def process_form_api(file: UploadFile = File(...), ocr_service = Depends(get_ocr_service)):
     logger.info(
         "Received /process-form request | filename=%s | content_type=%s",
         file.filename,
@@ -49,7 +42,7 @@ async def process_form_api(file: UploadFile = File(...)):
 
     try:
         logger.info("Starting OCR pipeline execution")
-        data, needs_review = await get_ocr_service().process_form(image)
+        data, needs_review = await ocr_service.process_form(image)
         logger.info("OCR pipeline completed | needs_review=%s", needs_review)
     except Exception as e:
         logger.exception("OCR processing failed")

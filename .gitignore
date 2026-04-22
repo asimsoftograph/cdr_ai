@@ -10,6 +10,7 @@ wheels/
 .venv
 
 dummy.md
+prompt.md
 # ML models (ignore large folders)
 models/recognizer/english_trocr_model/
 models/recognizer/qween_vision_model_for_bangla/
